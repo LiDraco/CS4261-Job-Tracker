@@ -31,11 +31,12 @@ public class MainActivity extends AppCompatActivity {
         final Button button = findViewById(R.id.submit);
         myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, jobs);
         mylist.setAdapter(myAdapter);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Code here executes on main thread after user presses button
+        button.setOnClickListener(v -> {
+            if(company_name.getText().length()>1 && date_applied.getText().length()>1) { // super bad way to prevent empty input
                 jobs.add(company_name.getText().toString() + " " + date_applied.getText().toString());
                 myAdapter.notifyDataSetChanged();
+                company_name.setText("");
+                date_applied.setText("");
             }
         });
 
