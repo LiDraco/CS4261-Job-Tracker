@@ -9,6 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
     ListView mylist;
     ArrayList<String> jobs;
     ArrayAdapter<String> myAdapter;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("message");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +38,9 @@ public class MainActivity extends AppCompatActivity {
         mylist.setAdapter(myAdapter);
         button.setOnClickListener(v -> {
             if(company_name.getText().length()>1 && date_applied.getText().length()>1) { // super bad way to prevent empty input
-                jobs.add(company_name.getText().toString() + " " + date_applied.getText().toString());
+                String input = company_name.getText().toString() + " " + date_applied.getText().toString();
+                jobs.add(input);
+                myRef.push().setValue(input);
                 myAdapter.notifyDataSetChanged();
                 company_name.setText("");
                 date_applied.setText("");
